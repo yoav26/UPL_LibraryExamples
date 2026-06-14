@@ -1,0 +1,17 @@
+// 
+// UPL_LibraryExamples.puh2
+// -------------------------------------
+// 
+// Project-specific constants and #definevar declarations.
+// Shared library constants live in uphGeneralConstants.puh2.
+// 
+// Created at: 05/25/2026
+// 
+
+// Example project constant (remove or replace when adding your own tests)
+#define EXAMPLE_TARGET_POSITION 10000
+
+// uplIODInPortReadBit test helpers
+
+#definevar testPassCount
+#definevar testFailCount

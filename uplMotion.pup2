@@ -1,0 +1,158 @@
+// 
+// uplMotion.pup2
+// -------------------------------------
+// 
+// Motion Functions file. Includes the Motions functions:
+// 
+// -- Motion Profile Configuration   (uplMotionProfileConfig) : Sets motion parameters including acceleration, deceleration, speed, and jerk for smooth control.
+// -- PTP Relative Motion            (uplMotionPTPRelative)   : Moves an axis by a relative distance from its current position. 
+// -- PTP Absolute Motion            (uplMotionPTPAbsolute)   : Moves an axis to a specified absolute position in counts.
+// -- PTP Repetitive Relative Motion (uplMotionPTPRelativeRep): Repeatedly moves by a relative distance with a configurable duration to pause at each target position.
+// -- PTP Repetitive Absolute Motion (uplMotionPTPAbsoluteRep): Repeatedly moves to an absolute position with a configurable duration to pause at each target position.
+// -- JOG Motion                     (uplMotionJOG)           : Enables continuous axis movement at a specified signed speed.
+// 
+// additional Functions:
+//
+// -- uplWait2EndOfMotion: Waits for motion completion on a specified axis.
+// -- uplMotionStop:       Halts motion on a specified axis.
+//
+// NOTE: The functions within this library modifies the value of the 'ChooseAxis[]' keyword according to the ‘lAxis_’ argument.
+// i.e., the 'PAxis' Method.
+
+// Maintainer: Yoav
+// Created at: 04/27/2025 14:20:00
+// version:    1.3.0
+//
+
+
+#include uphGeneralConstants.puh2
+#include uplMotion.puh2
+#include uplUtility.puh2
+
+
+// Motion profile configuration
+// -- lAxis_  : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 				Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Accel_  : Acceleration  [user-units / sec^2]
+// -- Decel_  : Deceleration  [user-units / sec^2]
+// -- Speed_  : Speed 		  [user-units / sec] 
+// -- Jerk_   : Smoothing	  [millisecond]
+function: uplMotionProfileConfig(l:lAxis_, Accel:Accel_, Decel:Decel_, Speed:Speed_, Jerk:Jerk_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PAccel = Accel_		
+	PDecel = Decel_
+	PSpeed = Speed_
+	PJerk  = Jerk_
+	
+endoffunc
+
+
+// Relative Motion
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 					 Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- TargetPos_   : Relative distance to move  [user-units]
+function: uplMotionPTPRelative(l:lAxis_, RelTrgt:TargetPos_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotionMode = MOTIONMODE_PTP 
+	PRelTrgt 	= TargetPos_	
+	
+	PBegin
+		
+endoffunc
+
+
+// Absolute Motion
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 					 Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- TargetPos_   : Absolute position [user-units]
+function: uplMotionPTPAbsolute(l:lAxis_, AbsTrgt:TargetPos_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotionMode = MOTIONMODE_PTP 
+	PAbsTrgt 	= TargetPos_
+	
+	PBegin
+		
+endoffunc
+
+
+// Repetitive Relative Motion
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 					 Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- TargetPos_   : Relative distance to move  			   [user-units]
+// -- lRepWait_    : Duration to pause at each target position [millisecond]
+function: uplMotionPTPRelativeRep(l:lAxis_, RelTrgt:TargetPos_, l:lRepWait_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotionMode = MOTIONMODE_PTP_REP
+	PRptWait 	= lRepWait_
+	PRelTrgt 	= TargetPos_ 			
+	
+	PBegin
+
+endoffunc
+
+
+// Repetitive Absolute Motion
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 					 Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- TargetPos_   : Absolute position          			   [user-units]
+// -- lRepWait_    : Duration to pause at each target position [millisecond]
+function: uplMotionPTPAbsoluteRep(l:lAxis_, AbsTrgt:TargetPos_, l:lRepWait_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotionMode = MOTIONMODE_PTP_REP
+	PRptWait 	= lRepWait_
+	PAbsTrgt 	= TargetPos_
+	
+	PBegin
+		
+endoffunc
+
+
+// Jog Motion
+// -- lAxis_: Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 			   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Speed_: Signed Speed  [user-units / sec]
+function: uplMotionJOG(l:lAxis_, Speed:Speed_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotionMode = MOTIONMODE_JOG
+	PSpeed   	= Speed_
+	
+	PBegin
+	
+endoffunc
+
+
+// Wait for the motion to end
+// -- lAxis_ : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 			   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+function: uplWait2EndOfMotion(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PWaitStatus[MOTION_STATUS], MOTION_END
+	
+endoffunc
+
+
+// Stops motions
+// -- lAxis_ : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 			   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+function: uplMotionStop(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PStop
+	
+endoffunc
+

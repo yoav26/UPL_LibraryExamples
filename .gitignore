@@ -1,0 +1,9 @@
+# Agito / UPL generated and build artifacts
+*.h
+*.cup2
+*.cupb2
+
+# OS / editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,134 @@
+// 
+// UPL_LibraryExamples.pup2
+// -------------------------------------
+// 
+// Clean main program for trying uplUtility, uplMotion, uplCNC, and uplIO.
+// Uncomment one example section OR one test block at a time (see README.md).
+// 
+// Module sources are linked from ../CNCMotions_specifications (same files).
+// Docs: README_uplUtility.md, README_uplMotion.md, README_uplCNC.md, README_uplIO.md
+// 
+#include UPL_LibraryExamples.puh2
+#include uphGeneralConstants.puh2
+#include uplUtility.puh2
+#include uplMotion.puh2
+#include uplCNC.puh2
+#include uplIO.puh2
+// 
+#information   UPL library examples and tests — uncomment one block in main to run
+#information   See README.md in this folder
+// 
+// Main task (Task 1)
+// ------------------
+// Dynamic allocation ranges: [Tasks],[Functions],[#definevar],[#definevar:f],[#definevar:l],[#definevar:d]
+//
+
+main([10,30],[5,61],[800,1000],[50,100],[50,100],[50,100])
+
+
+// =============================================================================
+// Utility — README_uplUtility.md
+// =============================================================================
+// uplMotorOn(A_AXIS)
+// uplMotorOn(B_AXIS)
+// uplMotorOff(A_AXIS)
+
+
+// =============================================================================
+// Motion — README_uplMotion.md
+// =============================================================================
+// uplMotionProfileConfig(A_AXIS, 100000, 100000, 20000, 0)
+// uplMotionProfileConfig(B_AXIS, 100000, 100000, 20000, 0)
+// uplMotionPTPRelative(A_AXIS, EXAMPLE_TARGET_POSITION)
+// uplWait2EndOfMotion(A_AXIS)
+// uplMotionStop(A_AXIS)
+
+
+// =============================================================================
+// CNC — README_uplCNC.md, README_Integration_Example.md
+// =============================================================================
+// ACNCAClear
+// uplCNCSetVectorParams(CNCAPushParam:100, CNCAPushParam:1000000, CNCAPushParam:1000000, CNCAPushParam:0)
+// uplCNCSetCornerParams(0, ll:1000, 5, 0)
+// uplMotionCNCLinear2(A_AXIS, ll:20000, B_AXIS, ll:10000, ll:20000, ll:0)
+// uplCNCAutomaticCornerMotion(A_AXIS, B_AXIS)
+// uplMotionCNCLinear2(A_AXIS, ll:0, B_AXIS, ll:0, ll:20000, ll:0)
+// AMotionMode=11
+// BMotionMode=11
+// ABegin
+
+
+// =============================================================================
+// Immediate I/O — README_uplIO.md (outside CNC FIFO)
+// =============================================================================
+// uplIODOutModeConfig(A_AXIS, 1, DOUTMODE_USER_OUTPUT)
+// uplIODOutPortWritePort(A_AXIS, 0)
+// uplIODOutPortWrite(A_AXIS, IO_NUM_1, IO_WRITE_SET)
+// AWaitTime, 500
+// uplIODOutPortWrite(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
+// l:din = uplIODInPortRead(A_AXIS)
+// if (uplIODInPortReadBit(A_AXIS, IO_NUM_1))
+// 	uplIODInLogWrite(A_AXIS, IO_NUM_1, IO_WRITE_SET)
+
+
+// =============================================================================
+// Tests — uncomment to run (comment out example sections above)
+// =============================================================================
+
+// testDInReadBit(A_AXIS)
+
+	AProgHaltThis
+
+endofmain
+
+
+// =============================================================================
+// uplIODInPortReadBit tests
+// =============================================================================
+// Verifies: uplIODInPortReadBit(lAxis_, IoMask_) with IO_NUM_n constants
+
+function: testDInReadBitMask(l:lAxis_, l:IoMask_) local: l:PortValue_, l:Expected_, l:Actual_
+
+	PortValue_ = uplIODInPortRead(lAxis_)
+	Expected_ = PortValue_ & IoMask_
+	Actual_ = uplIODInPortReadBit(lAxis_, IoMask_)
+
+	if (Actual_ == Expected_)
+		testPassCount = testPassCount + 1
+		printf("!G!uplIODInPortReadBit PASS axis=%l mask=%l expected=%l actual=%l", lAxis_, IoMask_, Expected_, Actual_)
+	else
+		testFailCount = testFailCount + 1
+		printf("!R!uplIODInPortReadBit FAIL axis=%l mask=%l expected=%l actual=%l", lAxis_, IoMask_, Expected_, Actual_)
+	end
+
+endoffunc
+
+
+function: testDInReadBit(l:lAxis_) local: l:ZeroResult_
+
+	testPassCount = 0
+	testFailCount = 0
+
+	ZeroResult_ = uplIODInPortReadBit(lAxis_, 0)
+	if (ZeroResult_ == 0)
+		testPassCount = testPassCount + 1
+		printf("!G!uplIODInPortReadBit PASS mask=0 expected=0 actual=%l", ZeroResult_)
+	else
+		testFailCount = testFailCount + 1
+		printf("!R!uplIODInPortReadBit FAIL mask=0 expected=0 actual=%l", ZeroResult_)
+	end
+
+	testDInReadBitMask(lAxis_, IO_NUM_1)
+	testDInReadBitMask(lAxis_, IO_NUM_2)
+	testDInReadBitMask(lAxis_, IO_NUM_3)
+	testDInReadBitMask(lAxis_, IO_NUM_16)
+	testDInReadBitMask(lAxis_, IO_NUM_32)
+	testDInReadBitMask(lAxis_, IO_NUM_1 | IO_NUM_2)
+
+	if (testFailCount == 0)
+		printf("!G!uplIODInPortReadBit: ALL %l TESTS PASSED", testPassCount)
+	else
+		printf("!R!uplIODInPortReadBit: %l PASSED, %l FAILED", testPassCount, testFailCount)
+	end
+
+endoffunc

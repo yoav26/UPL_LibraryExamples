@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ProjectData>
+	<Name>UPL_LibraryExamples</Name>
+	<Files>
+		<File>UPL_LibraryExamples.pup2</File>
+		<File>UPL_LibraryExamples.puh2</File>
+		<File>uphGeneralConstants.puh2</File>
+		<File>uplUtility.puh2</File>
+		<File>uplUtility.pup2</File>
+		<File>uplMotion.puh2</File>
+		<File>uplMotion.pup2</File>
+		<File>uplCNC.puh2</File>
+		<File>uplCNC.pup2</File>
+		<File>uplIO.puh2</File>
+		<File>uplIO.pup2</File>
+	</Files>
+	<WatchRegion>
+		<WatchWindow>
+		</WatchWindow>
+		<WatchWindow>
+		</WatchWindow>
+		<WatchWindow>
+		</WatchWindow>
+	</WatchRegion>
+	<OpenFiles>UPL_LibraryExamples.pup2;uplIO.pup2</OpenFiles>
+	<ActiveFile>UPL_LibraryExamples.pup2</ActiveFile>
+	<TextZoom>0</TextZoom>
+	<AutocompleteEnabled>True</AutocompleteEnabled>
+	<ExtendedAutocompleteInfo>True</ExtendedAutocompleteInfo>
+	<WarnOnAllocatedGenDataUse>True</WarnOnAllocatedGenDataUse>
+	<AllowRedefinition>False</AllowRedefinition>
+	<AllowLowLevel>False</AllowLowLevel>
+	<AllowLegacyFuncs>False</AllowLegacyFuncs>
+	<NoImpCast>False</NoImpCast>
+	<AllowImpCast>True</AllowImpCast>
+	<AllowImpCastLossy>False</AllowImpCastLossy>
+</ProjectData>

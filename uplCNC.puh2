@@ -1,0 +1,57 @@
+// 
+// uplCNC.puh2
+// -------------------------------------
+// 
+// CNC library header. Segment-type constants and CNC-related defines.
+// version:    1.2.0
+// 
+// for more info, review README_uplCNC.md
+//   
+//   
+//   
+//
+// -------------------------------------
+//
+// CNC Segment Types (upper 8 bits of CNCAPushType)
+#define CNC_SEGMENT_TYPE_LINEAR                 1
+#define CNC_SEGMENT_TYPE_ARC                    2
+#define CNC_SEGMENT_TYPE_SET_VECTOR_PARAMS      5
+#define CNC_SEGMENT_TYPE_CORNER_PARAMS          6
+#define CNC_SEGMENT_TYPE_DOUTPORT_WRITE         8
+#define CNC_SEGMENT_TYPE_ARRAY_WRITE            9
+#define CNC_SEGMENT_TYPE_WAIT_ARRAY             12
+#define CNC_SEGMENT_TYPE_AUTOMATIC_CORNER       14
+#define CNC_SEGMENT_TYPE_ARRAY_WRITE_MULTIPLE   17
+#define CNC_SEGMENT_TYPE_ARRAY_WRITE_MULTIPLE_WAIT 18
+#define CNC_SEGMENT_TYPE_WAIT_INPUT             21
+#define CNC_SEGMENT_TYPE_SPATIAL_EVENTS_SETUP   22
+#define CNC_SEGMENT_TYPE_SPATIAL_EVENTS         23
+
+
+// Uninvolved axes defines for each case (uninvolved slots = 0xF)
+#define NONINV_UNUSED_MASK		0x00FFFFFF
+#define ONEINV_UNUSED_MASK		0x000FFFFF
+#define TWOINV_UNUSED_MASK		0x0000FFFF
+#define THREEINV_UNUSED_MASK	0x00000FFF
+#define FOURINV_UNUSED_MASK		0x000000FF
+#define FIVEINV_UNUSED_MASK		0x0000000F
+
+
+// Array types:
+#define ARRAY_TYPE_GENDATA      0
+#define ARRAY_TYPE_USERPARAM    1
+
+// Input Selection
+#define INPUT_SELECTION_DIGITAL	0
+#define INPUT_SELECTION_ANALOG	1
+
+// Triggers
+#define	CNC_TRIG_NONE			    0
+#define	CNC_TRIG_GT				    1
+#define CNC_TRIG_EQ				    2
+#define CNC_TRIG_NE					3
+#define CNC_TRIG_LT					4
+#define CNC_TRIG_RIS_EDGE			5
+#define CNC_TRIG_FALL_EDGE			6
+#define CNC_TRIG_MANUAL				7
+#define CNC_TRIG_CHANGED			8

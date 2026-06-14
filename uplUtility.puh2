@@ -1,0 +1,19 @@
+// 
+// uplUtility.puh2
+// -------------------------------------
+// 
+// Utility Header file. Includes utilities oriented constants.
+// 
+// Maintainer: Yoav
+// Created at: 04/27/2025 14:20:00
+// version:    1.3.0
+//
+// -------------------------------------
+//
+// The Utility library provides essential functions for motor control in a multi-axis system. Currently, it includes:
+// uplMotorOn(lAxis_) : Activates the motor on the specified axis (e.g., A_AXIS, B_AXIS, etc.).
+// uplMotorOff(lAxis_): Deactivates the motor on the specified axis.
+
+
+// Module-specific constants belong here when needed.
+// Motor on/off values (`MOTORON_ON`, `MOTORON_OFF`) are in `uphGeneralConstants.puh2`.

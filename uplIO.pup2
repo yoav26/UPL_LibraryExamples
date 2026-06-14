@@ -1,0 +1,240 @@
+// 
+// uplIO.pup2
+// -------------------------------------
+// 
+// I/O Functions file. Immediate axis-scoped digital/analog I/O.
+// 
+// Naming: uplIO + <controller keyword> + <action>
+//   e.g. uplIODInPortRead, uplIODOutPortWrite, uplIODInModeConfig
+// 
+// Section order: Digital inputs -> Digital outputs -> Analog input -> Analog output
+// Within each section: Config -> Read -> Write
+//
+// NOTE: Functions modify AChooseAxis[AProgThread] according to lAxis_.
+// On single-axis drives, use A_AXIS only.
+//
+// Per-bit writes: pass IO_NUM_n and IO_WRITE_SET / IO_WRITE_CLEAR (uplIO.puh2).
+// Full-port writes: uplIODInLogWritePort / uplIODOutPortWritePort.
+//
+// Maintainer: Yoav
+// Created at: 06/01/2026
+// version:    3.1.0
+//
+
+
+#include uphGeneralConstants.puh2
+#include uplIO.puh2
+
+
+// =============================================================================
+// Digital inputs
+// =============================================================================
+
+// --- Config (DInMode[]) ---
+
+function: uplIODInModeConfig(l:lAxis_, l:InputIndex_, l:Mode_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDInMode[InputIndex_] = Mode_
+	
+endoffunc
+
+
+// --- Read (DInPort) ---
+
+function: l:DInPortValue_ = uplIODInPortRead(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	DInPortValue_ = PDInPort
+	
+endoffunc
+
+
+// --- Bitwise Read (DInPort) ---
+// -- IoMask_ : IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+function: l:InputValue_ = uplIODInPortReadBit(l:lAxis_, l:IoMask_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	InputValue_ = PDInPort & IoMask_
+	
+endoffunc
+
+
+// --- Write (DInLog) ---
+
+function: uplIODInLogWritePort(l:lAxis_, l:DInLogValue_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDInLog = DInLogValue_
+	
+endoffunc
+
+
+// --- Bitwise Write (DInLog) ---
+
+// -- IoMask_ : IO_NUM_n; Action_ : IO_WRITE_SET or IO_WRITE_CLEAR
+function: uplIODInLogWrite(l:lAxis_, l:IoMask_, l:Action_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	switch Action_
+		case IO_WRITE_SET
+			PDInLog = PDInLog | IoMask_
+			break
+		case IO_WRITE_CLEAR
+			PDInLog = PDInLog & (IO_MASK_ALL ^ IoMask_)
+			break
+		default
+		end
+	
+endoffunc
+
+
+// -- IoMask_ : IO_NUM_n from uplIO.puh2
+function: uplIODInLogToggleBits(l:lAxis_, l:IoMask_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDInLog = PDInLog ^ IoMask_
+	
+endoffunc
+
+// =============================================================================
+// Digital outputs
+// =============================================================================
+
+// --- Config (DOutMode[], DOutSelect[], DOutType) ---
+
+function: uplIODOutModeConfig(l:lAxis_, l:OutputIndex_, l:Mode_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutMode[OutputIndex_] = Mode_
+	
+endoffunc
+
+
+function: uplIODOutSelectConfig(l:lAxis_, l:SelectIndex_, l:SelectValue_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutSelect[SelectIndex_] = SelectValue_
+	
+endoffunc
+
+
+function: uplIODOutTypeConfig(l:lAxis_, l:DOutTypeValue_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutType = DOutTypeValue_
+	
+endoffunc
+
+
+// --- Read (DOutPort, DOutLog, DOutSelect, DOutType) ---
+
+function: l:DOutPortValue_ = uplIODOutPortRead(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	DOutPortValue_ = PDOutPort
+	
+endoffunc
+
+
+function: l:DOutLogValue_ = uplIODOutLogRead(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	DOutLogValue_ = PDOutLog
+	
+endoffunc
+
+
+function: l:DOutSelectValue_ = uplIODOutSelectRead(l:lAxis_, l:SelectIndex_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	DOutSelectValue_ = PDOutSelect[SelectIndex_]
+	
+endoffunc
+
+
+function: l:DOutTypeValue_ = uplIODOutTypeRead(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	DOutTypeValue_ = PDOutType
+	
+endoffunc
+
+
+// --- Write (DOutPort) ---
+
+function: uplIODOutPortWritePort(l:lAxis_, l:DOutPortValue_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutPort = DOutPortValue_
+	
+endoffunc
+
+
+// --- Bitwise Write (DOutPort) ---
+
+// -- IoMask_ : IO_NUM_n; Action_ : IO_WRITE_SET or IO_WRITE_CLEAR
+function: uplIODOutPortWrite(l:lAxis_, l:IoMask_, l:Action_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	switch Action_
+		case IO_WRITE_SET
+			PDOutPort = PDOutPort | IoMask_
+			break
+		case IO_WRITE_CLEAR
+			PDOutPort = PDOutPort & (IO_MASK_ALL ^ IoMask_)
+			break
+		default
+		end
+	
+endoffunc
+
+
+// -- IoMask_ : IO_NUM_n from uplIO.puh2
+function: uplIODOutPortToggleBits(l:lAxis_, l:IoMask_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutPort = PDOutPort ^ IoMask_
+	
+endoffunc
+
+
+// =============================================================================
+// Analog input
+// =============================================================================
+
+// --- Config (AInMode[]) ---
+
+function: uplIOAInModeSet(l:lAxis_, l:InputIndex_, l:Mode_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PAInMode[InputIndex_] = Mode_
+	
+endoffunc
+
+
+// --- Read (AInPort[]) ---
+
+function: f:AInValue_ = uplIOAInPortRead(l:lAxis_, l:Index_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	AInValue_ = PAInPort[Index_]
+	
+endoffunc
+
+
+// --- Write ---
+
+
+// =============================================================================
+// Analog output
+// =============================================================================
+
+// --- Config ---
+
+// --- Read ---
+
+// --- Write ---
+

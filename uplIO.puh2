@@ -1,0 +1,63 @@
+// uplIO.puh2
+// -------------------------------------
+// 
+// I/O Header file. Module-local constants for immediate (non-CNC) axis I/O.
+// 
+// Maintainer: Yoav
+
+// Created at: 06/01/2026
+
+// version:    3.1.0
+//
+// -------------------------------------
+
+// Immediate digital/analog I/O on a per-axis basis (A_AXIS..H_AXIS).
+
+// For motion-synchronized I/O, use uplCNC (uplCNCDOutPortWrite, uplCNCWaitInput).
+
+// Legacy port bit masks (DINPORT_*, DOUTPORT_*) remain in uphGeneralConstants.puh2.
+
+
+// Digital I/O bit masks by I/O number (1..32). bit n-1 = I/O #n.
+// Pass IO_NUM_n with IO_WRITE_SET or IO_WRITE_CLEAR to per-bit write helpers.
+
+// --- I/O number masks (I/O #1 .. #32) ---
+#define	IO_NUM_1									0x00000001
+#define	IO_NUM_2									0x00000002
+#define	IO_NUM_3									0x00000004
+#define	IO_NUM_4									0x00000008
+#define	IO_NUM_5									0x00000010
+#define	IO_NUM_6									0x00000020
+#define	IO_NUM_7									0x00000040
+#define	IO_NUM_8									0x00000080
+#define	IO_NUM_9									0x00000100
+#define	IO_NUM_10									0x00000200
+#define	IO_NUM_11									0x00000400
+#define	IO_NUM_12									0x00000800
+#define	IO_NUM_13									0x00001000
+#define	IO_NUM_14									0x00002000
+#define	IO_NUM_15									0x00004000
+#define	IO_NUM_16									0x00008000
+#define	IO_NUM_17									0x00010000
+#define	IO_NUM_18									0x00020000
+#define	IO_NUM_19									0x00040000
+#define	IO_NUM_20									0x00080000
+#define	IO_NUM_21									0x00100000
+#define	IO_NUM_22									0x00200000
+#define	IO_NUM_23									0x00400000
+#define	IO_NUM_24									0x00800000
+#define	IO_NUM_25									0x01000000
+#define	IO_NUM_26									0x02000000
+#define	IO_NUM_27									0x04000000
+#define	IO_NUM_28									0x08000000
+#define	IO_NUM_29									0x10000000
+#define	IO_NUM_30									0x20000000
+#define	IO_NUM_31									0x40000000
+#define	IO_NUM_32									0x80000000
+
+// --- Per-bit write action (DOutPort, DInLog, and other bitwise uplIO writes) ---
+#define	IO_WRITE_SET									0
+#define	IO_WRITE_CLEAR									1
+
+// Invert IO_NUM_n for CLEAR:  PD* = PD* & (IO_MASK_ALL ^ IoMask_)
+#define	IO_MASK_ALL									0xFFFFFFFF

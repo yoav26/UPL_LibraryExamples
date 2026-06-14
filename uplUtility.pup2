@@ -1,0 +1,47 @@
+// 
+// uplUtility.pup2
+// -------------------------------------
+// 
+// Utility Functions file. Includes utility functions:
+// 
+// -- Motor On   (uplMotorOn) : On the motor
+// -- Motor Off  (uplMotorOff): Off the motor
+//
+// NOTE: The functions within this library modifies the value of the 'ChooseAxis[]' keyword according to the ‘lAxis_’ argument.
+// i.e., the 'PAxis' Method.
+
+// Maintainer: Yoav
+// Created at: 04/27/2025 14:20:00
+// version:    1.3.0
+//
+
+
+#include uphGeneralConstants.puh2
+#include uplUtility.puh2
+
+// Enable motor
+// -- lAxis_ : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 			   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+function: uplMotorOn(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotorOn = MOTORON_ON
+	
+endoffunc
+
+
+// Disable motor
+// -- lAxis_ : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+// 			   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+function: uplMotorOff(l:lAxis_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	PMotorOn = MOTORON_OFF
+	
+endoffunc
+
+
+
+

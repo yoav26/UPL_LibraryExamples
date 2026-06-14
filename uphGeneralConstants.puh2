@@ -1,0 +1,364 @@
+// 
+// uphGeneralConstants.puh2
+// -------------------------------------
+// 
+// General Header file. Includes general constants; included automatically when using UPL modules
+// 
+// Maintainer: Yoav
+// Created at: 04/27/2025 14:20:00
+// version:    1.3.0
+//
+
+
+// Axes Identification
+#define A_AXIS			0
+#define B_AXIS    		1
+#define C_AXIS    		2
+#define D_AXIS    		3
+#define E_AXIS    		4
+#define F_AXIS   		5
+#define G_AXIS    		6
+#define H_AXIS    		7
+
+// Ports Identification
+#define A_PORT			0
+#define B_PORT    		1
+#define C_PORT    		2
+#define D_PORT    		3
+#define E_PORT    		4
+#define F_PORT   		5
+#define G_PORT    		6
+#define H_PORT    		7
+#define I_PORT    		8
+#define J_PORT    		9
+#define K_PORT    		10
+#define L_PORT    		11
+
+
+// Motor Enable / Disable
+#define MOTORON_OFF    	0
+#define MOTORON_ON    	1
+
+
+// Motion mode (glMotionMode) definitions and bits
+#define	MOTIONMODE_INVALID												-1
+#define	MOTIONMODE_JOG													0	
+#define	MOTIONMODE_PTP													1	
+#define	MOTIONMODE_PTP_REP												2	
+#define	MOTIONMODE_PD_DIRECT											3	
+#define	MOTIONMODE_PD_INDIRECT											4	
+#define	MOTIONMODE_GEAR_DIRECT											5	
+#define	MOTIONMODE_GEAR_INDIRECT										6	
+#define	MOTIONMODE_ECAM_DIRECT											7	
+#define	MOTIONMODE_ECAM_INDIRECT										8	
+#define	MOTIONMODE_FIFO													9	
+#define	MOTIONMODE_SLAVE_POSREF											10	
+#define	MOTIONMODE_CNCA													11	
+#define	MOTIONMODE_JOYSTICK_POS_DIRECT									12	
+#define	MOTIONMODE_JOYSTICK_POS_INDIRECT								13	
+#define	MOTIONMODE_JOYSTICK_VEL_DIRECT									14	
+#define	MOTIONMODE_JOYSTICK_VEL_INDIRECT								15	
+#define	MOTIONMODE_VECTOR												16	
+#define	MOTIONMODE_CNCB													17	
+#define	MOTIONMODE_SPLINE_BUFFER										18	
+#define	MOTIONMODE_FIFO_POSITION_TRACKING								19
+
+
+// Digital input modes related constants (for DInMode)
+#define	DINMODE_USER_INPUT												0
+#define	DINMODE_DEDICATED_HW_FUNCTION									1
+#define	DINMODE_MOTOR_ON_INPUT											2
+#define	DINMODE_BEGIN_MOTION											3
+#define	DINMODE_STOP_MOTION												4
+#define	DINMODE_CLEAR_IN_PULSES											5
+#define	DINMODE_ABORT_RESUME_MOTION										6
+#define	DINMODE_ALARM_RESET												7
+#define	DINMODE_ABORT_MOTION											8
+#define	DINMODE_REV_LIMIT												9
+#define	DINMODE_FWD_LIMIT												10
+#define	DINMODE_TORQUE_LIMIT_ON											11
+#define	DINMODE_ACTIVATE_DYNAMIC_BRAKE									12
+#define	DINMODE_LOCK_STATIC_BRAKE										13
+#define	DINMODE_CONTROL_SET_CHANGE										14
+#define	DINMODE_ADD_FILTER												15
+#define	DINMODE_MODE_SWITCH_VEL_POS										16
+#define	DINMODE_MODE_SWITCH_VEL_CUR										17
+#define	DINMODE_MODE_SWITCH_POS_CUR										18
+#define	DINMODE_CLEAR_ABS_ENC											19
+#define	DINMODE_CHANGE_SPEED											20
+#define	DINMODE_HOME													21
+#define DINMODE_MODE_SWITCH_POS_FORCE                                   22
+#define DINMODE_HALL_A													23	// Assuming B and C are connected just to the next inputs after this one.
+#define DINMODE_FAULT_INPUT												24
+#define DINMODE_HOMING_ON_INPUT											25
+#define DINMODE_FAULT_INPUT_CONTROLLED_STOP								26
+#define DINMODE_HEIDENHAIN_LIMITS										27
+
+
+// Digital output modes related constants (for DOutMode)
+#define	DOUTMODE_USER_OUTPUT											0
+#define	DOUTMODE_DEDICATED_HW_FUNCTION									1
+#define	DOUTMODE_MOTOR_ON												2
+#define	DOUTMODE_IN_MOTION												3
+#define	DOUTMODE_IN_ACCELERATION										4
+#define	DOUTMODE_IN_DECELERATION										5
+#define	DOUTMODE_IN_CONSTANT_SPEED										6
+#define	DOUTMODE_IN_TARGET												8
+#define	DOUTMODE_ALARM													9
+#define	DOUTMODE_RLS_FLS_ACTIVE											12
+#define	DOUTMODE_OUT_OF_TRAVEL											13
+#define	DOUTMODE_REGENERATION_ACTIVE									14
+#define	DOUTMODE_DYNAMIC_BRAKE_ACTIVE									15
+#define	DOUTMODE_STATIC_BRAKE_LOCK										16
+#define	DOUTMODE_STATIC_UNUSED											17
+#define	DOUTMODE_RLS_ACTIVE												18
+#define	DOUTMODE_FLS_ACTIVE												19
+#define DOUTMODE_HOMING_STAT                                            20
+#define DOUTMODE_FORCE_IN_TARGET                                        21
+#define DOUTMODE_MAX                                                    21
+
+
+// Digital output driver type (for DOutType port word; per-bit: 0=SINK, 1=SOURCE)
+#define DOUTTYPE_SINK                                                   0
+#define DOUTTYPE_SOURCE                                                 1
+
+
+// Digital I/O indexing limits (controller arrays / 32-bit port words)
+#define IO_DIN_COUNT                                                    32
+#define IO_DOUT_COUNT                                                   32
+#define IO_DOUT_SELECT_COUNT                                            16
+
+
+// Digital port bit masks — bit n corresponds to I/O #(n+1); output #1 = bit 0
+#define	DINPORT_DIN1_BIT												0x00000001
+#define	DINPORT_DIN2_BIT												0x00000002
+#define	DINPORT_DIN3_BIT												0x00000004
+#define	DINPORT_DIN4_BIT												0x00000008
+#define	DINPORT_DIN5_BIT												0x00000010
+#define	DINPORT_DIN6_BIT												0x00000020
+#define	DINPORT_DIN7_BIT												0x00000040
+#define	DINPORT_DIN8_BIT												0x00000080
+#define	DINPORT_DIN9_BIT												0x00000100
+#define	DINPORT_DIN10_BIT												0x00000200
+#define	DINPORT_DIN11_BIT												0x00000400
+#define	DINPORT_DIN12_BIT												0x00000800
+#define	DINPORT_DIN13_BIT												0x00001000
+#define	DINPORT_DIN14_BIT												0x00002000
+#define	DINPORT_DIN15_BIT												0x00004000
+#define	DINPORT_DIN16_BIT												0x00008000
+#define	DINPORT_DIN17_BIT												0x00010000
+#define	DINPORT_DIN18_BIT												0x00020000
+#define	DINPORT_DIN19_BIT												0x00040000
+#define	DINPORT_DIN20_BIT												0x00080000
+#define	DINPORT_DIN21_BIT												0x00100000
+#define	DINPORT_DIN22_BIT												0x00200000
+#define	DINPORT_DIN23_BIT												0x00400000
+#define	DINPORT_DIN24_BIT												0x00800000
+#define	DINPORT_DIN25_BIT												0x01000000
+#define	DINPORT_DIN26_BIT												0x02000000
+#define	DINPORT_DIN27_BIT												0x04000000
+#define	DINPORT_DIN28_BIT												0x08000000
+#define	DINPORT_DIN29_BIT												0x10000000
+#define	DINPORT_DIN30_BIT												0x20000000
+#define	DINPORT_DIN31_BIT												0x40000000
+#define	DINPORT_DIN32_BIT												0x80000000
+
+#define	DOUTPORT_DOUT1_BIT												0x00000001
+#define	DOUTPORT_DOUT2_BIT												0x00000002
+#define	DOUTPORT_DOUT3_BIT												0x00000004
+#define	DOUTPORT_DOUT4_BIT												0x00000008
+#define	DOUTPORT_DOUT5_BIT												0x00000010
+#define	DOUTPORT_DOUT6_BIT												0x00000020
+#define	DOUTPORT_DOUT7_BIT												0x00000040
+#define	DOUTPORT_DOUT8_BIT												0x00000080
+#define	DOUTPORT_DOUT9_BIT												0x00000100
+#define	DOUTPORT_DOUT10_BIT												0x00000200
+#define	DOUTPORT_DOUT11_BIT												0x00000400
+#define	DOUTPORT_DOUT12_BIT												0x00000800
+#define	DOUTPORT_DOUT13_BIT												0x00001000
+#define	DOUTPORT_DOUT14_BIT												0x00002000
+#define	DOUTPORT_DOUT15_BIT												0x00004000
+#define	DOUTPORT_DOUT16_BIT												0x00008000
+#define	DOUTPORT_DOUT17_BIT												0x00010000
+#define	DOUTPORT_DOUT18_BIT												0x00020000
+#define	DOUTPORT_DOUT19_BIT												0x00040000
+#define	DOUTPORT_DOUT20_BIT												0x00080000
+#define	DOUTPORT_DOUT21_BIT												0x00100000
+#define	DOUTPORT_DOUT22_BIT												0x00200000
+#define	DOUTPORT_DOUT23_BIT												0x00400000
+#define	DOUTPORT_DOUT24_BIT												0x00800000
+#define	DOUTPORT_DOUT25_BIT												0x01000000
+#define	DOUTPORT_DOUT26_BIT												0x02000000
+#define	DOUTPORT_DOUT27_BIT												0x04000000
+#define	DOUTPORT_DOUT28_BIT												0x08000000
+#define	DOUTPORT_DOUT29_BIT												0x10000000
+#define	DOUTPORT_DOUT30_BIT												0x20000000
+#define	DOUTPORT_DOUT31_BIT												0x40000000
+#define	DOUTPORT_DOUT32_BIT												0x80000000
+
+#define	DOUTPORT_DOUT1_SET												0x00000001
+#define	DOUTPORT_DOUT2_SET												0x00000002
+#define	DOUTPORT_DOUT3_SET												0x00000004
+#define	DOUTPORT_DOUT4_SET												0x00000008
+#define	DOUTPORT_DOUT5_SET												0x00000010
+#define	DOUTPORT_DOUT6_SET												0x00000020
+#define	DOUTPORT_DOUT7_SET												0x00000040
+#define	DOUTPORT_DOUT8_SET												0x00000080
+#define	DOUTPORT_DOUT9_SET												0x00000100
+#define	DOUTPORT_DOUT10_SET												0x00000200
+#define	DOUTPORT_DOUT11_SET												0x00000400
+#define	DOUTPORT_DOUT12_SET												0x00000800
+#define	DOUTPORT_DOUT13_SET												0x00001000
+#define	DOUTPORT_DOUT14_SET												0x00002000
+#define	DOUTPORT_DOUT15_SET												0x00004000
+#define	DOUTPORT_DOUT16_SET												0x00008000
+#define	DOUTPORT_DOUT17_SET												0x00010000
+#define	DOUTPORT_DOUT18_SET												0x00020000
+#define	DOUTPORT_DOUT19_SET												0x00040000
+#define	DOUTPORT_DOUT20_SET												0x00080000
+#define	DOUTPORT_DOUT21_SET												0x00100000
+#define	DOUTPORT_DOUT22_SET												0x00200000
+#define	DOUTPORT_DOUT23_SET												0x00400000
+#define	DOUTPORT_DOUT24_SET												0x00800000
+#define	DOUTPORT_DOUT25_SET												0x01000000
+#define	DOUTPORT_DOUT26_SET												0x02000000
+#define	DOUTPORT_DOUT27_SET												0x04000000
+#define	DOUTPORT_DOUT28_SET												0x08000000
+#define	DOUTPORT_DOUT29_SET												0x10000000
+#define	DOUTPORT_DOUT30_SET												0x20000000
+#define	DOUTPORT_DOUT31_SET												0x40000000
+#define	DOUTPORT_DOUT32_SET												0x80000000
+
+#define	DOUTPORT_DOUT1_CLEAR											0xFFFFFFFE
+#define	DOUTPORT_DOUT2_CLEAR											0xFFFFFFFD
+#define	DOUTPORT_DOUT3_CLEAR											0xFFFFFFFB
+#define	DOUTPORT_DOUT4_CLEAR											0xFFFFFFF7
+#define	DOUTPORT_DOUT5_CLEAR											0xFFFFFFEF
+#define	DOUTPORT_DOUT6_CLEAR											0xFFFFFFDF
+#define	DOUTPORT_DOUT7_CLEAR											0xFFFFFFBF
+#define	DOUTPORT_DOUT8_CLEAR											0xFFFFFF7F
+#define	DOUTPORT_DOUT9_CLEAR											0xFFFFFEFF
+#define	DOUTPORT_DOUT10_CLEAR											0xFFFFFDFF
+#define	DOUTPORT_DOUT11_CLEAR											0xFFFFFBFF
+#define	DOUTPORT_DOUT12_CLEAR											0xFFFFF7FF
+#define	DOUTPORT_DOUT13_CLEAR											0xFFFFEFFF
+#define	DOUTPORT_DOUT14_CLEAR											0xFFFFDFFF
+#define	DOUTPORT_DOUT15_CLEAR											0xFFFFBFFF
+#define	DOUTPORT_DOUT16_CLEAR											0xFFFF7FFF
+#define	DOUTPORT_DOUT17_CLEAR											0xFFFEFFFF
+#define	DOUTPORT_DOUT18_CLEAR											0xFFFDFFFF
+#define	DOUTPORT_DOUT19_CLEAR											0xFFFBFFFF
+#define	DOUTPORT_DOUT20_CLEAR											0xFFF7FFFF
+#define	DOUTPORT_DOUT21_CLEAR											0xFFEFFFFF
+#define	DOUTPORT_DOUT22_CLEAR											0xFFDFFFFF
+#define	DOUTPORT_DOUT23_CLEAR											0xFFBFFFFF
+#define	DOUTPORT_DOUT24_CLEAR											0xFF7FFFFF
+#define	DOUTPORT_DOUT25_CLEAR											0xFEFFFFFF
+#define	DOUTPORT_DOUT26_CLEAR											0xFDFFFFFF
+#define	DOUTPORT_DOUT27_CLEAR											0xFBFFFFFF
+#define	DOUTPORT_DOUT28_CLEAR											0xF7FFFFFF
+#define	DOUTPORT_DOUT29_CLEAR											0xEFFFFFFF
+#define	DOUTPORT_DOUT30_CLEAR											0xDFFFFFFF
+#define	DOUTPORT_DOUT31_CLEAR											0xBFFFFFFF
+#define	DOUTPORT_DOUT32_CLEAR											0x7FFFFFFF
+
+
+// Analog input modes related constants (for AInMode)
+#define	ANALOG_USER_INPUT												0
+#define	ANALOG_VELOCITY_COMMAND											1
+#define	ANALOG_CURRENT_COMMAND											2
+#define	ANALOG_FORCE_FEEDBACK											3
+#define	ANALOG_FORCE_COMMAND											4
+#define	ANALOG_JOYSTICK_INPUT											5
+#define	ANALOG_TORQUE_COMP_INPUT										6
+#define	ANALOG_INPUT_REVERSE_TORQUE_LIMIT								7
+#define	ANALOG_INPUT_FORWARD_TORQUE_LIMIT								8
+#define	ANALOG_INPUT_TACHO_FEEDBACK										9
+#define	ANALOG_INPUT_POSITION_FEEDBACK									10
+
+
+//	Event types (EventType)
+#define	EVENT_TYPE_SINGLE	   											0
+#define	EVENT_TYPE_BY_GAP												1
+#define	EVENT_TYPE_TABLE												2
+#define EVENT_TYPE_TABLE_HARDWARE                                       3
+#define	EVENT_TYPE_TRIG_NOW												4
+#define	EVENT_TYPE_MAX													4
+
+
+// Controller Fault (ConFlt) definitions and bits
+#define	CONFLT_ABORT													1001						//"Abort signal was detected"
+#define	CONFLT_SHORT													1002						//"Short from motor phase to ground"
+#define	CONFLT_ENCODER_ERROR											1003						//"Encoder error (disconnected or other errors)"
+#define	CONFLT_WATCH_DOG												1004						//"FPGA watchdog not received"
+#define	CONFLT_DEAD_TIME												1005						//"PWM dead time too short"
+#define	CONFLT_HALLS_DISCONNECTED										1006						//"Hall input disconnected"
+#define	CONFLT_MOTOR_STUCK												1007						//"Motor is stuck"
+#define	CONFLT_BUS_OVER_VOLTAGE											1008						//"Bus Voltage too high"
+#define	CONFLT_BUS_UNDER_VOLTAGE										1009						//"Bus Voltage too low"
+#define	CONFLT_LOGIC_OVER_VOLTAGE										1010						//"Logic Voltage too high"
+#define	CONFLT_LOGIC_UNDER_VOLTAGE										1011						//"Logic Voltage too low"
+#define	CONFLT_HIGH_BUS_CURRENT											1012						//"Bus current too high"
+#define	CONFLT_PHASE_A_CURRENT											1013						//"Phase A current too high"
+#define	CONFLT_PHASE_B_CURRENT											1014						//"Phase B current too high"
+#define	CONFLT_PHASE_C_CURRENT											1015						//"Phase C current too high"
+#define	CONFLT_MOTOR_CURRENT											1016						//"Motor current too high"
+#define	CONFLT_OVER_DRIVER_POWER										1017						//"Driver power exceeds limit"
+#define	CONFLT_HIGH_IPM_TEMP											1018						//"IPM temperature too high"
+#define	CONFLT_HIGH_VELOCITY											1019						//"Velocity too high"
+#define	CONFLT_HIGH_POS_ERR												1020						//"Position error exceeds limit"
+#define	CONFLT_HIGH_VEL_ERR												1021						//"Velocity error exceeds limit"
+#define	CONFLT_HIGH_CPU_TEMP											1022						//"CPU temperature too high"
+#define	CONFLT_BUS_OVER_VOLTAGE_ABS										1023						//"Bus Voltage too high - exceed absolute limitation"
+#define	CONFLT_STO1														1024						//"STO1 activated"
+#define	CONFLT_OVERCURR_A												1025						//"Over current detected on motor A"
+#define	CONFLT_AUX_ENC_ERROR											1026						//"Auxiliary encoder error (disconnected or other errors)"
+#define	CONFLT_IPM_FAULT												1027						//"IPM fault"
+#define	CONFLT_UNKNOWN_ENCODER_TYPE										1028						//"The selected encoder type is currently not supported"
+#define	CONFLT_UNKNOWN_AUX_ENCODER_TYPE									1029						//"The selected auxiliary encoder type is currently not supported"
+#define	CONFLT_ECAM_MASTER_TOO_FAST										1030						//"The ECAM master variables changed more than 1 ECAM cycle in 1 sample"
+#define	CONFLT_FIFO_TOO_SMALL_ACCLERATION								1031						//"The FIFO reached a motion segment which results with a too small acceleration: below 1/Ts"
+#define	CONFLT_IMPROPER_MODULUS_USAGE									1032						//"The main encoder modulus can't be used with input shaping feature"
+#define	CONFLT_BIT_FAILED												1033						//"Some fault was detected during power on BIT. Use BITFault to read its code"
+#define	CONFLT_STO2_OR_VCC_DRIVE										1034						//"STO2 activated or problem with Vcc of amplifier"
+#define	CONFLT_CONTROL_AC_POWER_CUTOFF									1035						//"AC Power supply to the control was cut off"
+#define	CONFLT_OVERCURR_B												1036						//"Over current detected on motor B"
+#define	CONFLT_LINEAR_AMPLIFIER_OVER_CURR_CONT							1037						//"Over continuous current detected on built-in Linear Amplifier"
+#define	CONFLT_LINEAR_AMPLIFIER_OVER_VOLTAGE							1038						//"Over voltage detected by the built-in Linear Amplifier"
+#define	CONFLT_LINEAR_PWM_AMPLIFIER_CONFLICT							1039						//"AAmpType and BAmpType have conflicting values. Can not be one Linear and one PWM"
+#define	CONFLT_HIGH_MOTOR_TEMP											1040						//"Motor temperature too high"
+#define	CONFLT_RESERVED1												1041						//"Unexpected error code, consult Agito"
+#define	CONFLT_5V_ISO													1042						//"Amplifier isolated 5v fault"
+#define CONFLT_CI_DISCONNECTED											1043						//"CI Communication was disconnected"
+#define CONFLT_MOTOR_I2T                                               	1044                        //"Motor current over I2T"
+#define CONFLT_HIGH_FORCE_ERR                                          	1045                        //"Force error exceeds limit"
+#define CONFLT_NO_FORCE_FEEDBACK										1046						//"Force control: analog force feedback not defined"
+#define CONFLT_5V_FAULT													1047						//"One of the 5v output pins for encoders or I/O activated the current limitation. Check your HW connections!"
+#define CONFLT_MEMBER_UNEXPECTED_MOTOR_OFF								1048						//"Other member axis got motor off"
+#define	CONFLT_DUAL_STUCK												1049						//"Dual Loop high difference between velocities"
+#define	CONFLT_FAULT_INPUT												1050						//"External fault input (for example: of external drive) is activated"
+#define	CONFLT_INRUSH_RESISTOR											1051						//"Internal relay is still switched off. Try waiting more time after power on before enabling the motor"
+#define	CONFLT_STO2														1052						//"STO2 activated"
+#define	CONFLT_AMP_TYPE_ERROR											1053						//"AmpType value not allowed for this product"
+#define	CONFLT_MOTOR_AC_POWER_CUTOFF									1054						//"At least one required phase of the AC Power inputs was cut off"
+#define CONFLT_HIGH_POS_ERR_OL                                         	1055                        //"Position error exceeds limit in open-loop"
+#define CONFLT_HIGH_VEL_ERR_OL                                         	1056                        //"Velocity error exceeds limit in open-loop"
+#define CONFLT_HIGH_FORCE_ERR_OL                                       	1057                        //"Force error exceeds limit in open-loop"
+#define CONFLT_UNDERVOLTAGE                                            	1058                        //"Undervoltage detected on 10.5v supply (8v threshold)"
+#define CONFLT_OVERCURR_C                                              	1059                        //"Over current detected on motor C"
+#define	CONFLT_HIGH_BOARD_TEMP											1060						//"Product temperature (BoardTemp) too high"
+#define CONFLT_GANTRY_MEMBER_UNEXPECTED_MOTOR_OFF						1061						//"Other gantry member axis got motor off"
+#define	CONFLT_FAULT_INPUT_CONTROLLED_STOP								1062						//"External request to Fault with Controlled Stop: stop ended and motor was disabled"
+#define CONFLT_VEC_MEMBER_UNEXPECTED_MOTOR_OFF							1063						//"Other member axis got motor off"
+#define CONFLT_ICNQC_ERROR												1064						//"There is an error in the encoder sine/cosine reading."
+#define CONFLT_STALL_DETECTED_AND_MOTOR_OFF								1065						//"Stall detection activated, motor is turning off"
+#define CONFLT_VENC_MAX_NUM_PULSES_EXCEEDED                            	1066                        //"Virtual encoder has exceeded the max number of possible pulses per interrupt"
+#define CONFLT_ANOMALY_DETECTED											1067                        //"Anomaly/collision detected in the system"
+#define CONFLT_ABS_ENC_ERROR                                           	1068                        //"Abs Encoder Error bit is asserted, either the assembly encoder readhead is not good, or the encoder scale needs to be inspected"
+#define CONFLT_ABS_ENC_CRC_ERR                                         	1069                        //"Abs Encoder CRC has failed beyond a time threshold set by EncAbsErrTime. The noise level might be too high"
+#define CONFLT_ABS_ENC_DISCONNECT                                      	1070                        //"Abs Encoder could not be detected and looks like is disconnected"
+#define CONFLT_UNSTABLE_CURR_LOOP_DETECTED                             	1071                        //"Unstable current loop detected"
+#define CONFLT_HIGH_PIV_NOISE_DETECTED                                 	1072                        //"High noise/jitter detected"
+#define CONFLT_NO_PHASING_IS_DETECTED									1080						//"No phasing is detected"
+#define CONFLT_CPU_BG_WATCHDOG											1081						//"CPU background loop watchdog timeout"
+
