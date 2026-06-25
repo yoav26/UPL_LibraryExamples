@@ -19,6 +19,7 @@
 #include uphGeneralConstants.puh2
 #include uplUtility.puh2
 
+
 // Enable motor
 // -- lAxis_ : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
 // 			   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
@@ -41,7 +42,4 @@ function: uplMotorOff(l:lAxis_)
 	PMotorOn = MOTORON_OFF
 	
 endoffunc
-
-
-
 

@@ -27,7 +27,7 @@
 
 #include uphGeneralConstants.puh2
 #include uplMotion.puh2
-#include uplUtility.puh2
+//#include uplUtility.puh2
 
 
 // Motion profile configuration

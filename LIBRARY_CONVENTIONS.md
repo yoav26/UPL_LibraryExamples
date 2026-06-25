@@ -22,7 +22,7 @@ This document is the single source of truth for conventions used in this library
 - **General shared constants file** uses `uph*` prefix.
 - **Function names** use module prefix, controller keyword, then action:
   - Pattern: `upl<Module><Keyword><Action>` (no separators)
-  - I/O examples: `uplIODInPortRead`, `uplIODInPortReadBit`, `uplIODOutPortWrite`, `uplIODInModeConfig`
+  - I/O examples: `uplIODInPortRead`, `uplIODInPortReadBit`, `uplIODOutPortReadBit`, `uplIODOutPortWrite`, `uplIODInModeConfig`
   - Motion: `uplMotion...` (legacy; migrate to keyword pattern when touched)
   - Utility: `upl...` (utility scope)
   - CNC: `uplCNC...` (segment-oriented; `uplCNCDOutPortWrite` already matches keyword + action)

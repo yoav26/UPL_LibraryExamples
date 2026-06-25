@@ -14,11 +14,11 @@
 // On single-axis drives, use A_AXIS only.
 //
 // Per-bit writes: pass IO_NUM_n and IO_WRITE_SET / IO_WRITE_CLEAR (uplIO.puh2).
-// Full-port writes: uplIODInLogWritePort / uplIODOutPortWritePort.
+// Full-port writes: uplIODInLogWrite / uplIODOutPortWrite.
 //
 // Maintainer: Yoav
 // Created at: 06/01/2026
-// version:    3.1.0
+// version:    5.0.0
 //
 
 
@@ -32,6 +32,11 @@
 
 // --- Config (DInMode[]) ---
 
+// Configure digital input mode
+// -- lAxis_      : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                  Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- InputIndex_ : Digital input number (1-based index into DInMode[])
+// -- Mode_       : Input mode value [DINMODE_* constants in uphGeneralConstants.puh2]
 function: uplIODInModeConfig(l:lAxis_, l:InputIndex_, l:Mode_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -42,6 +47,10 @@ endoffunc
 
 // --- Read (DInPort) ---
 
+// Read full digital input port
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Returns  : 32-bit DInPort value (bit n-1 = input #n)
 function: l:DInPortValue_ = uplIODInPortRead(l:lAxis_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -51,7 +60,12 @@ endoffunc
 
 
 // --- Bitwise Read (DInPort) ---
-// -- IoMask_ : IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+
+// Read masked digital input bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+// -- Returns  : DInPort masked by IoMask_ (non-zero if any selected input is high)
 function: l:InputValue_ = uplIODInPortReadBit(l:lAxis_, l:IoMask_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -62,7 +76,11 @@ endoffunc
 
 // --- Write (DInLog) ---
 
-function: uplIODInLogWritePort(l:lAxis_, l:DInLogValue_)
+// Write full digital input log port
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- DInLogValue_ : 32-bit value written to DInLog
+function: uplIODInLogWrite(l:lAxis_, l:DInLogValue_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	PDInLog = DInLogValue_
@@ -72,12 +90,16 @@ endoffunc
 
 // --- Bitwise Write (DInLog) ---
 
-// -- IoMask_ : IO_NUM_n; Action_ : IO_WRITE_SET or IO_WRITE_CLEAR
-function: uplIODInLogWrite(l:lAxis_, l:IoMask_, l:Action_)
+// Set or clear digital input log bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+// -- Action_  : IO_WRITE_SET or IO_WRITE_CLEAR
+function: uplIODInLogWriteBit(l:lAxis_, l:IoMask_, l:Action_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	
-	switch Action_
+	switch (Action_)
 		case IO_WRITE_SET
 			PDInLog = PDInLog | IoMask_
 			break
@@ -85,12 +107,16 @@ function: uplIODInLogWrite(l:lAxis_, l:IoMask_, l:Action_)
 			PDInLog = PDInLog & (IO_MASK_ALL ^ IoMask_)
 			break
 		default
-		end
+			break
+	end
 	
 endoffunc
 
 
-// -- IoMask_ : IO_NUM_n from uplIO.puh2
+// Toggle digital input log bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
 function: uplIODInLogToggleBits(l:lAxis_, l:IoMask_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -104,6 +130,11 @@ endoffunc
 
 // --- Config (DOutMode[], DOutSelect[], DOutType) ---
 
+// Configure digital output mode
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- OutputIndex_ : Digital output number (1-based index into DOutMode[])
+// -- Mode_        : Output mode value [DOUTMODE_* constants in uphGeneralConstants.puh2]
 function: uplIODOutModeConfig(l:lAxis_, l:OutputIndex_, l:Mode_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -112,6 +143,11 @@ function: uplIODOutModeConfig(l:lAxis_, l:OutputIndex_, l:Mode_)
 endoffunc
 
 
+// Configure digital output select
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- SelectIndex_ : Select number (1-based index into DOutSelect[])
+// -- SelectValue_ : Value written to DOutSelect[SelectIndex_]
 function: uplIODOutSelectConfig(l:lAxis_, l:SelectIndex_, l:SelectValue_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -120,6 +156,10 @@ function: uplIODOutSelectConfig(l:lAxis_, l:SelectIndex_, l:SelectValue_)
 endoffunc
 
 
+// Configure digital output type
+// -- lAxis_         : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                     Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- DOutTypeValue_ : 32-bit DOutType value (per-bit DOUTTYPE_SINK / DOUTTYPE_SOURCE)
 function: uplIODOutTypeConfig(l:lAxis_, l:DOutTypeValue_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -128,8 +168,12 @@ function: uplIODOutTypeConfig(l:lAxis_, l:DOutTypeValue_)
 endoffunc
 
 
-// --- Read (DOutPort, DOutLog, DOutSelect, DOutType) ---
+// --- Read (DOutPort) ---
 
+// Read full digital output port
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Returns  : 32-bit DOutPort value (bit n-1 = output #n)
 function: l:DOutPortValue_ = uplIODOutPortRead(l:lAxis_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -138,33 +182,28 @@ function: l:DOutPortValue_ = uplIODOutPortRead(l:lAxis_)
 endoffunc
 
 
-function: l:DOutLogValue_ = uplIODOutLogRead(l:lAxis_)
+// --- Bitwise Read (DOutPort) ---
+
+// Read masked digital output bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+// -- Returns  : DOutPort masked by IoMask_ (non-zero if any selected output is high)
+function: l:OutputValue_ = uplIODOutPortReadBit(l:lAxis_, l:IoMask_)
 	
 	AChooseAxis[AProgThread] = lAxis_
-	DOutLogValue_ = PDOutLog
-	
-endoffunc
-
-
-function: l:DOutSelectValue_ = uplIODOutSelectRead(l:lAxis_, l:SelectIndex_)
-	
-	AChooseAxis[AProgThread] = lAxis_
-	DOutSelectValue_ = PDOutSelect[SelectIndex_]
-	
-endoffunc
-
-
-function: l:DOutTypeValue_ = uplIODOutTypeRead(l:lAxis_)
-	
-	AChooseAxis[AProgThread] = lAxis_
-	DOutTypeValue_ = PDOutType
+	OutputValue_ = PDOutPort & IoMask_
 	
 endoffunc
 
 
 // --- Write (DOutPort) ---
 
-function: uplIODOutPortWritePort(l:lAxis_, l:DOutPortValue_)
+// Write full digital output port
+// -- lAxis_         : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                     Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- DOutPortValue_ : 32-bit value written to DOutPort
+function: uplIODOutPortWrite(l:lAxis_, l:DOutPortValue_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	PDOutPort = DOutPortValue_
@@ -174,12 +213,16 @@ endoffunc
 
 // --- Bitwise Write (DOutPort) ---
 
-// -- IoMask_ : IO_NUM_n; Action_ : IO_WRITE_SET or IO_WRITE_CLEAR
-function: uplIODOutPortWrite(l:lAxis_, l:IoMask_, l:Action_)
+// Set or clear digital output bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+// -- Action_  : IO_WRITE_SET or IO_WRITE_CLEAR
+function: uplIODOutPortWriteBits(l:lAxis_, l:IoMask_, l:Action_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	
-	switch Action_
+	switch (Action_)
 		case IO_WRITE_SET
 			PDOutPort = PDOutPort | IoMask_
 			break
@@ -187,16 +230,71 @@ function: uplIODOutPortWrite(l:lAxis_, l:IoMask_, l:Action_)
 			PDOutPort = PDOutPort & (IO_MASK_ALL ^ IoMask_)
 			break
 		default
+			break
 		end
 	
 endoffunc
 
 
-// -- IoMask_ : IO_NUM_n from uplIO.puh2
+// Toggle digital output bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
 function: uplIODOutPortToggleBits(l:lAxis_, l:IoMask_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	PDOutPort = PDOutPort ^ IoMask_
+	
+endoffunc
+
+
+// --- Write (DOutLog) ---
+
+// Write full digital output log port
+// -- lAxis_        : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                    Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- DOutLogValue_ : 32-bit value written to DOutLog
+function: uplIODOutLogWrite(l:lAxis_, l:DOutLogValue_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutLog = DOutLogValue_
+	
+endoffunc
+
+
+// --- Bitwise Write (DOutLog) ---
+
+// Set or clear digital output log bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+// -- Action_  : IO_WRITE_SET or IO_WRITE_CLEAR
+function: uplIODOutLogWriteBit(l:lAxis_, l:IoMask_, l:Action_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	
+	switch (Action_)
+		case IO_WRITE_SET
+			PDOutLog = PDOutLog | IoMask_
+			break
+		case IO_WRITE_CLEAR
+			PDOutLog = PDOutLog & (IO_MASK_ALL ^ IoMask_)
+			break
+		default
+			break
+	end
+	
+endoffunc
+
+
+// Toggle digital output log bit(s)
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
+function: uplIODOutLogToggleBits(l:lAxis_, l:IoMask_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PDOutLog = PDOutLog ^ IoMask_
 	
 endoffunc
 
@@ -207,7 +305,12 @@ endoffunc
 
 // --- Config (AInMode[]) ---
 
-function: uplIOAInModeSet(l:lAxis_, l:InputIndex_, l:Mode_)
+// Configure analog input mode
+// -- lAxis_      : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                  Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- InputIndex_ : Analog input number (1-based index into AInMode[])
+// -- Mode_       : Analog mode value [ANALOG_* constants in uphGeneralConstants.puh2]
+function: uplIOAInModeConfig(l:lAxis_, l:InputIndex_, l:Mode_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	PAInMode[InputIndex_] = Mode_
@@ -217,6 +320,11 @@ endoffunc
 
 // --- Read (AInPort[]) ---
 
+// Read analog input value
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Index_   : Analog input number (1-based); Index_ > 0
+// -- Returns  : Analog input value [float]
 function: f:AInValue_ = uplIOAInPortRead(l:lAxis_, l:Index_)
 	
 	AChooseAxis[AProgThread] = lAxis_
@@ -225,16 +333,54 @@ function: f:AInValue_ = uplIOAInPortRead(l:lAxis_, l:Index_)
 endoffunc
 
 
-// --- Write ---
+// (Analog inputs are read-only — no Write)
 
 
 // =============================================================================
 // Analog output
 // =============================================================================
 
-// --- Config ---
+// --- Config (AOutMode[]) ---
 
-// --- Read ---
+// Configure analog output mode
+// -- lAxis_       : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                   Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- OutputIndex_ : Analog output number (1-based index into AOutMode[])
+// -- Mode_        : Analog mode value [ANALOG_* constants in uphGeneralConstants.puh2]
+function: uplIOAOutModeConfig(l:lAxis_, l:OutputIndex_, l:Mode_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PAOutMode[OutputIndex_] = Mode_
+	
+endoffunc
 
-// --- Write ---
+
+// --- Read (AOutPort[]) ---
+
+// Read analog output value
+// -- lAxis_   : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Index_   : Analog output number (1-based); Index_ > 0
+// -- Returns  : Analog output value [float]
+function: f:AOutValue_ = uplIOAOutPortRead(l:lAxis_, l:Index_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	AOutValue_ = PAOutPort[Index_]
+	
+endoffunc
+
+
+// --- Write (AOutPort[]) ---
+
+// Write analog output value
+// -- lAxis_     : Apply on axis, value of 0 refers to A-axis, value of 1 to B-axis, and so on.
+//                 Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
+// -- Index_     : Analog output number (1-based); Index_ > 0
+// -- AOutValue_ : Analog output value to write [float]
+function: uplIOAOutPortWrite(l:lAxis_, l:Index_, f:AOutValue_)
+	
+	AChooseAxis[AProgThread] = lAxis_
+	PAOutPort[Index_] = AOutValue_
+	
+endoffunc
 

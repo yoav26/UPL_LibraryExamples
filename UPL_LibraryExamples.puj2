@@ -22,7 +22,7 @@
 		<WatchWindow>
 		</WatchWindow>
 	</WatchRegion>
-	<OpenFiles>UPL_LibraryExamples.pup2;uplIO.pup2</OpenFiles>
+	<OpenFiles>UPL_LibraryExamples.pup2;uplIO.pup2;uplIO.puh2</OpenFiles>
 	<ActiveFile>UPL_LibraryExamples.pup2</ActiveFile>
 	<TextZoom>0</TextZoom>
 	<AutocompleteEnabled>True</AutocompleteEnabled>

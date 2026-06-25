@@ -23,7 +23,7 @@
 // Dynamic allocation ranges: [Tasks],[Functions],[#definevar],[#definevar:f],[#definevar:l],[#definevar:d]
 //
 
-main([10,30],[5,61],[800,1000],[50,100],[50,100],[50,100])
+main([10,30],[5,70],[800,1000],[50,100],[50,100],[50,100])
 
 
 // =============================================================================
@@ -62,22 +62,23 @@ main([10,30],[5,61],[800,1000],[50,100],[50,100],[50,100])
 // Immediate I/O — README_uplIO.md (outside CNC FIFO)
 // =============================================================================
 // uplIODOutModeConfig(A_AXIS, 1, DOUTMODE_USER_OUTPUT)
-// uplIODOutPortWritePort(A_AXIS, 0)
-// uplIODOutPortWrite(A_AXIS, IO_NUM_1, IO_WRITE_SET)
+// uplIODOutPortWrite(A_AXIS, 0)
+// uplIODOutPortWriteBits(A_AXIS, IO_NUM_1, IO_WRITE_SET)
 // AWaitTime, 500
-// uplIODOutPortWrite(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
+// uplIODOutPortWriteBits(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
 // l:din = uplIODInPortRead(A_AXIS)
 // if (uplIODInPortReadBit(A_AXIS, IO_NUM_1))
-// 	uplIODInLogWrite(A_AXIS, IO_NUM_1, IO_WRITE_SET)
+// 	uplIODInLogWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_SET)
 
 
 // =============================================================================
 // Tests — uncomment to run (comment out example sections above)
 // =============================================================================
 
-// testDInReadBit(A_AXIS)
-
-	AProgHaltThis
+	//testDInReadBit(D_AXIS)
+	//testDOutWriteReadBit(A_AXIS)
+	printf("!G!test mask=%l", IO_NUM_32)
+	//AProgHaltThis
 
 endofmain
 
@@ -129,6 +130,83 @@ function: testDInReadBit(l:lAxis_) local: l:ZeroResult_
 		printf("!G!uplIODInPortReadBit: ALL %l TESTS PASSED", testPassCount)
 	else
 		printf("!R!uplIODInPortReadBit: %l PASSED, %l FAILED", testPassCount, testFailCount)
+	end
+
+endoffunc
+
+
+// =============================================================================
+// uplIODOut write / read-back tests
+// =============================================================================
+// Verifies: uplIODOutPortWriteBits / uplIODOutPortReadBit / uplIODOutPortToggleBits
+// WARNING: this test drives physical digital outputs on lAxis_. The original
+//          DOutPort value is saved and restored, but do not run on a machine
+//          where toggling outputs #1/#2/#8 is unsafe.
+
+function: testDOutBit(l:lAxis_, l:IoMask_) local: l:SetRead_, l:ClrRead_
+
+	uplIODOutPortWriteBits(lAxis_, IoMask_, IO_WRITE_SET)
+	SetRead_ = uplIODOutPortReadBit(lAxis_, IoMask_)
+	if (SetRead_ == IoMask_)
+		testPassCount = testPassCount + 1
+		printf("!G!DOut SET PASS mask=%l read=%l", IoMask_, SetRead_)
+	else
+		testFailCount = testFailCount + 1
+		printf("!R!DOut SET FAIL mask=%l read=%l", IoMask_, SetRead_)
+	end
+
+	uplIODOutPortWriteBits(lAxis_, IoMask_, IO_WRITE_CLEAR)
+	ClrRead_ = uplIODOutPortReadBit(lAxis_, IoMask_)
+	if (ClrRead_ == 0)
+		testPassCount = testPassCount + 1
+		printf("!G!DOut CLEAR PASS mask=%l read=%l", IoMask_, ClrRead_)
+	else
+		testFailCount = testFailCount + 1
+		printf("!R!DOut CLEAR FAIL mask=%l read=%l", IoMask_, ClrRead_)
+	end
+
+endoffunc
+
+
+function: testDOutWriteReadBit(l:lAxis_) local: l:Original_, l:ToggleRead_
+
+	testPassCount = 0
+	testFailCount = 0
+
+	Original_ = uplIODOutPortRead(lAxis_)
+	uplIODOutPortWrite(lAxis_, 0)
+
+	testDOutBit(lAxis_, IO_NUM_1)
+	testDOutBit(lAxis_, IO_NUM_2)
+	testDOutBit(lAxis_, IO_NUM_8)
+
+	uplIODOutPortWrite(lAxis_, 0)
+	uplIODOutPortToggleBits(lAxis_, IO_NUM_1)
+	ToggleRead_ = uplIODOutPortReadBit(lAxis_, IO_NUM_1)
+	if (ToggleRead_ == IO_NUM_1)
+		testPassCount = testPassCount + 1
+		printf("!G!DOut TOGGLE PASS read=%l", ToggleRead_)
+	else
+		testFailCount = testFailCount + 1
+		printf("!R!DOut TOGGLE FAIL read=%l", ToggleRead_)
+	end
+
+	uplIODOutPortToggleBits(lAxis_, IO_NUM_1)
+	ToggleRead_ = uplIODOutPortReadBit(lAxis_, IO_NUM_1)
+	if (ToggleRead_ == 0)
+		testPassCount = testPassCount + 1
+		printf("!G!DOut TOGGLE-BACK PASS read=%l", ToggleRead_)
+	else
+		testFailCount = testFailCount + 1
+		printf("!R!DOut TOGGLE-BACK FAIL read=%l", ToggleRead_)
+	end
+
+	uplIODOutPortWrite(lAxis_, Original_)
+
+	if (testFailCount == 0)
+		printf("!G!uplIODOut write/read: ALL %l TESTS PASSED", testPassCount)
+	else
+		printf("!R!uplIODOut write/read: %l PASSED, %l FAILED", testPassCount, testFailCount)
 	end
 
 endoffunc
