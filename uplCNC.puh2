@@ -3,7 +3,7 @@
 // -------------------------------------
 // 
 // CNC library header. Segment-type constants and CNC-related defines.
-// version:    1.2.0
+// version:    5.0.0
 // 
 // for more info, review README_uplCNC.md
 //   
@@ -53,5 +53,5 @@
 #define CNC_TRIG_LT					4
 #define CNC_TRIG_RIS_EDGE			5
 #define CNC_TRIG_FALL_EDGE			6
-#define CNC_TRIG_MANUAL				7
+// 7 is reserved (behaves as CNC_TRIG_NONE); intentionally left unnamed
 #define CNC_TRIG_CHANGED			8

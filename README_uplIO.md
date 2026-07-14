@@ -17,7 +17,7 @@ Functions follow **`uplIO` + controller keyword + action**:
 | `uplIO` + `DOutPort` + `Read` | `uplIODOutPortRead` |
 | `uplIO` + `DOutPort` + `ReadBit` | `uplIODOutPortReadBit` |
 | `uplIO` + `DOutPort` + `Write` | `uplIODOutPortWrite` (full 32-bit port) |
-| `uplIO` + `DOutPort` + `WriteBits` | `uplIODOutPortWriteBits` (per-bit SET/CLEAR) |
+| `uplIO` + `DOutPort` + `WriteBit` | `uplIODOutPortWriteBit` (per-bit SET/CLEAR) |
 | `uplIO` + `DOutLog` + `Write` | `uplIODOutLogWrite` (full 32-bit port) |
 | `uplIO` + `DOutLog` + `WriteBit` | `uplIODOutLogWriteBit` (per-bit SET/CLEAR) |
 | `uplIO` + `DInMode` + `Config` | `uplIODInModeConfig` |
@@ -36,7 +36,7 @@ Functions follow **`uplIO` + controller keyword + action**:
 
 **Full-port write** functions assign the entire 32-bit value: `uplIODInLogWrite`, `uplIODOutPortWrite`, `uplIODOutLogWrite`.
 
-**Per-bit write** functions take `IO_NUM_n` and `IO_WRITE_SET` / `IO_WRITE_CLEAR`: `uplIODInLogWriteBit`, `uplIODOutPortWriteBits`, `uplIODOutLogWriteBit`.
+**Per-bit write** functions take `IO_NUM_n` and `IO_WRITE_SET` / `IO_WRITE_CLEAR`: `uplIODInLogWriteBit`, `uplIODOutPortWriteBit`, `uplIODOutLogWriteBit`.
 
 **Toggle** functions XOR a mask: `uplIODInLogToggleBits`, `uplIODOutPortToggleBits`, `uplIODOutLogToggleBits`.
 
@@ -57,7 +57,7 @@ UPL access: `PDInPort`, `PDInLog`, `PDInMode[]`, `PDOutPort`, `PDOutLog`, `PDOut
 
 ### Per-bit I/O constants (`uplIO.puh2`)
 
-Pass **`IO_NUM_n`** (bit mask for I/O #n) as `IoMask_` to ReadBit, WriteBits, and ToggleBits helpers. Pass **`IO_WRITE_SET`** or **`IO_WRITE_CLEAR`** to WriteBits helpers.
+Pass **`IO_NUM_n`** (bit mask for I/O #n) as `IoMask_` to ReadBit, WriteBit, and ToggleBits helpers. Pass **`IO_WRITE_SET`** or **`IO_WRITE_CLEAR`** to WriteBit helpers.
 
 | Constant | Value | Use |
 |----------|-------|-----|
@@ -68,14 +68,14 @@ Pass **`IO_NUM_n`** (bit mask for I/O #n) as `IoMask_` to ReadBit, WriteBits, an
 
 Example: `uplIODInLogWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_SET)`
 
-### Integration example
+### Integration Example
 
-```
+```txt
 uplIODOutModeConfig(A_AXIS, 1, DOUTMODE_USER_OUTPUT)
 uplIODOutPortWrite(A_AXIS, 0)
-uplIODOutPortWriteBits(A_AXIS, IO_NUM_1, IO_WRITE_SET)
+uplIODOutPortWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_SET)
 AWaitTime, 500
-uplIODOutPortWriteBits(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
+uplIODOutPortWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
 
 l:din = uplIODInPortRead(A_AXIS)
 if (uplIODInPortReadBit(A_AXIS, IO_NUM_1))
@@ -127,7 +127,7 @@ Listed in **`uplIO.pup2` source order**.
 | Function | Returns | Maps to |
 |----------|---------|---------|
 | `uplIODOutPortWrite(lAxis_, DOutPortValue_)` | — | `PDOutPort` (full 32-bit value) |
-| `uplIODOutPortWriteBits(lAxis_, IoMask_, Action_)` | — | SET: `\|= IoMask_`; CLEAR: `&= IO_MASK_ALL ^ IoMask_` |
+| `uplIODOutPortWriteBit(lAxis_, IoMask_, Action_)` | — | SET: `\|= IoMask_`; CLEAR: `&= IO_MASK_ALL ^ IoMask_` |
 | `uplIODOutPortToggleBits(lAxis_, IoMask_)` | — | `PDOutPort ^= IoMask_` |
 
 **Digital outputs — Write (DOutLog)**

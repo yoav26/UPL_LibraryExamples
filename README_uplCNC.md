@@ -1,5 +1,7 @@
 ## uplCNC CNC Segment Specifications
 
+Source: `uplCNC.pup2` (v5.0.0).
+
 This document specifies the CNC segment interface implemented in `uplCNC.pup2`.  
 All CNC segments are emitted to the CNC FIFO as:
 
@@ -21,28 +23,28 @@ All CNC segments are emitted to the CNC FIFO as:
 - **Type 5 – Set Vector Parameters** (`CNC_SEGMENT_TYPE_SET_VECTOR_PARAMS = 5`)  
   Global vector speed/accel configuration (no involved axes).
 
-- **Type 6 - Set Corner Parameters** (`CNC_SEGMENT_TYPE_CORNER_PARAMS = 6`)  
+- **Type 6 – Set Corner Parameters** (`CNC_SEGMENT_TYPE_CORNER_PARAMS = 6`)  
   Configures automatic cornering behavior for ARC corners (radius/error model, angle threshold, and axis-acceleration limiting).
 
-- **Type 8 - DOUT Port Write** (`CNC_SEGMENT_TYPE_DOUTPORT_WRITE = 8`)  
+- **Type 8 – DOUT Port Write** (`CNC_SEGMENT_TYPE_DOUTPORT_WRITE = 8`)  
   Writes a digital output port value; `lAxis_` is pushed as data (not encoded in involved-axis bits).
 
-- **Type 9 - Array Write** (`CNC_SEGMENT_TYPE_ARRAY_WRITE = 9`)  
+- **Type 9 – Array Write** (`CNC_SEGMENT_TYPE_ARRAY_WRITE = 9`)  
   Writes a value into a controller array. No axes are involved in `CNCAPushType`; `lAxis_` is pushed as a normal parameter.
 
-- **Type 12 - Wait Using User Array** (`CNC_SEGMENT_TYPE_WAIT_ARRAY = 12`)  
+- **Type 12 – Wait Using User Array** (`CNC_SEGMENT_TYPE_WAIT_ARRAY = 12`)  
   Waits, with all member axes in-position, until a trigger condition based on `GenData[]` or `UserParam[]` is satisfied.
 
-- **Type 14 - Automatic Corner Motion** (`CNC_SEGMENT_TYPE_AUTOMATIC_CORNER = 14`)  
+- **Type 14 – Automatic Corner Motion** (`CNC_SEGMENT_TYPE_AUTOMATIC_CORNER = 14`)  
   Inserts an automatic corner between linear segments; controller validates the previous segment and required dummy parameters.
 
-- **Type 17 - Multiple Write to User Array** (`CNC_SEGMENT_TYPE_ARRAY_WRITE_MULTIPLE = 17`)  
+- **Type 17 – Multiple Write to User Array** (`CNC_SEGMENT_TYPE_ARRAY_WRITE_MULTIPLE = 17`)  
   Performs four consecutive assignments into `GenData[]` or axis-specific `UserParam[]` when the CNC motion reaches this segment.
 
-- **Type 18 - Multiple Write to User Array and Wait Using User Array** (`CNC_SEGMENT_TYPE_ARRAY_WRITE_MULTIPLE_WAIT = 18`)  
+- **Type 18 – Multiple Write to User Array and Wait Using User Array** (`CNC_SEGMENT_TYPE_ARRAY_WRITE_MULTIPLE_WAIT = 18`)  
   Performs the same four assignments as Type 17, then waits using trigger definitions on the same selected array at `TriggerIndexValue`.
 
-- **Type 21 - Wait Using Inputs** (`CNC_SEGMENT_TYPE_WAIT_INPUT = 21`)  
+- **Type 21 – Wait Using Inputs** (`CNC_SEGMENT_TYPE_WAIT_INPUT = 21`)  
   Waits (with all member axes in-position) for a trigger condition on either `DInPort` or `AInPort`.
 
 - **Type 22 – Spatial Events Setup** (`CNC_SEGMENT_TYPE_SPATIAL_EVENTS_SETUP = 22`)  
@@ -252,6 +254,7 @@ Uninvolved axis slots are filled using the appropriate `*_UNUSED_MASK` macro.
     - `l:Value_` – value to write  
   - **CNCAPushType**: type 9 + no involved axes (`NONINV_UNUSED_MASK`)  
   - **Params**: `ArrayType_`, `lAxis_`, `Index_`, `Value_`
+  - **Ordering note**: function args are `lAxis_`-first for convenience; pushed `Params` order is controller-defined.
   - **Behavior when executed**:  
     - If `ArrayType_ = 0`: `GenData[Index_] = Value_`  
     - If `ArrayType_ = 1`: `<lAxis_>UserParam[Index_] = Value_`
@@ -281,7 +284,7 @@ Uninvolved axis slots are filled using the appropriate `*_UNUSED_MASK` macro.
 - `4`: Smaller Than
 - `5`: Rising Edge
 - `6`: Falling Edge
-- `7`: Reserved (acts as `TriggerType_ = 0`)
+- `7`: Reserved (behaves as None, i.e. `TriggerType_ = 0`)
 - `8`: Upon change (`TriggerValue_` is ignored, but must still be included in the pushed segment)
 
 ### Wait behavior notes
@@ -377,7 +380,7 @@ Uninvolved axis slots are filled using the appropriate `*_UNUSED_MASK` macro.
 - `4`: Smaller Than
 - `5`: Rising Edge
 - `6`: Falling Edge
-- `7`: Reserved (acts as `TriggerType_ = 0`)
+- `7`: Reserved (behaves as None, i.e. `TriggerType_ = 0`)
 - `8`: Upon change (`TriggerValue_` is ignored, but must still be included in the pushed segment)
 
 ### Wait behavior note
@@ -417,7 +420,7 @@ Uninvolved axis slots are filled using the appropriate `*_UNUSED_MASK` macro.
 - `4`: Smaller Than
 - `5`: Rising Edge
 - `6`: Falling Edge
-- `7`: Reserved (acts as `TriggerType_ = 0`)
+- `7`: Reserved (behaves as None, i.e. `TriggerType_ = 0`)
 - `8`: Upon change (`TriggerValue_` is ignored, but must still be included in the pushed segment)
 
 ### Wait behavior note
@@ -483,22 +486,22 @@ These helpers manipulate CNC control flags/keywords rather than emitting motion 
   - No range clamp/validation is performed by this helper.
 
 - **Function**: `uplCNCStop`  
-  - Sets `StopCNCA` to stop CNC motion.
+  - Issues `AStopCNCA` to stop CNC motion.
 
 - **Function**: `uplCNCPause`  
-  - Sets `CNCAPause = 1` to pause CNC motion.
+  - Sets `ACNCAPause = 1` to pause CNC motion.
 
 - **Function**: `uplCNCResume`  
-  - Sets `CNCAPause = 0` to resume CNC motion.
+  - Sets `ACNCAPause = 0` to resume CNC motion.
 
 - **Function**: `uplCNCStepModeOn`  
-  - Sets `CNCAStepMode = 1` to enable step mode.
+  - Sets `ACNCAStepMode = 1` to enable step mode.
 
 - **Function**: `uplCNCDoStep`  
-  - Sets `CNCADoStep = 1` to perform a single CNC step when in step mode.
+  - Sets `ACNCADoStep = 1` to perform a single CNC step when in step mode.
 
 - **Function**: `uplCNCStepModeOff`  
-  - Sets `CNCAStepMode = 0` to disable step mode.
+  - Sets `ACNCAStepMode = 0` to disable step mode.
 
 
 ## Notes and Conventions

@@ -63,9 +63,9 @@ main([10,30],[5,70],[800,1000],[50,100],[50,100],[50,100])
 // =============================================================================
 // uplIODOutModeConfig(A_AXIS, 1, DOUTMODE_USER_OUTPUT)
 // uplIODOutPortWrite(A_AXIS, 0)
-// uplIODOutPortWriteBits(A_AXIS, IO_NUM_1, IO_WRITE_SET)
+// uplIODOutPortWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_SET)
 // AWaitTime, 500
-// uplIODOutPortWriteBits(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
+// uplIODOutPortWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_CLEAR)
 // l:din = uplIODInPortRead(A_AXIS)
 // if (uplIODInPortReadBit(A_AXIS, IO_NUM_1))
 // 	uplIODInLogWriteBit(A_AXIS, IO_NUM_1, IO_WRITE_SET)
@@ -138,14 +138,14 @@ endoffunc
 // =============================================================================
 // uplIODOut write / read-back tests
 // =============================================================================
-// Verifies: uplIODOutPortWriteBits / uplIODOutPortReadBit / uplIODOutPortToggleBits
+// Verifies: uplIODOutPortWriteBit / uplIODOutPortReadBit / uplIODOutPortToggleBits
 // WARNING: this test drives physical digital outputs on lAxis_. The original
 //          DOutPort value is saved and restored, but do not run on a machine
 //          where toggling outputs #1/#2/#8 is unsafe.
 
 function: testDOutBit(l:lAxis_, l:IoMask_) local: l:SetRead_, l:ClrRead_
 
-	uplIODOutPortWriteBits(lAxis_, IoMask_, IO_WRITE_SET)
+	uplIODOutPortWriteBit(lAxis_, IoMask_, IO_WRITE_SET)
 	SetRead_ = uplIODOutPortReadBit(lAxis_, IoMask_)
 	if (SetRead_ == IoMask_)
 		testPassCount = testPassCount + 1
@@ -155,7 +155,7 @@ function: testDOutBit(l:lAxis_, l:IoMask_) local: l:SetRead_, l:ClrRead_
 		printf("!R!DOut SET FAIL mask=%l read=%l", IoMask_, SetRead_)
 	end
 
-	uplIODOutPortWriteBits(lAxis_, IoMask_, IO_WRITE_CLEAR)
+	uplIODOutPortWriteBit(lAxis_, IoMask_, IO_WRITE_CLEAR)
 	ClrRead_ = uplIODOutPortReadBit(lAxis_, IoMask_)
 	if (ClrRead_ == 0)
 		testPassCount = testPassCount + 1

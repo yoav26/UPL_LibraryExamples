@@ -218,7 +218,7 @@ endoffunc
 //               Notice that the library includes constants definitions, such as A_AXIS, B_AXIS, ..., H_AXIS.
 // -- IoMask_  : Bit mask, IO_NUM_n from uplIO.puh2 (e.g. IO_NUM_1)
 // -- Action_  : IO_WRITE_SET or IO_WRITE_CLEAR
-function: uplIODOutPortWriteBits(l:lAxis_, l:IoMask_, l:Action_)
+function: uplIODOutPortWriteBit(l:lAxis_, l:IoMask_, l:Action_)
 	
 	AChooseAxis[AProgThread] = lAxis_
 	

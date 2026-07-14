@@ -413,7 +413,7 @@ keyword:
   just part of the name, not an axis selector. `GenData` / `GenDataLL` / `GenDataF` / `GenDataD`
   are **global**. Also global: `AProgThread` (current thread), `AWaitTime` (delay),
   `AProgHaltThis` (halt this program), and the CNC engine keywords `ACNCAClear`,
-  `ACNCAPushType`, `ACNCAPushParam`, `CNCADoStep`.
+  `ACNCAPushType`, `ACNCAPushParam`, `ACNCADoStep`.
 
 > Rule of thumb: per-axis quantities (motion mode, targets, IO ports, `UserParam`) are
 > axis-scoped; program/engine-wide data (`GenData`, thread/program control, the CNC queue) is
@@ -526,7 +526,7 @@ These govern the `upl*` helper modules built on top of IDE+ (full spec in
 `LIBRARY_CONVENTIONS.md`).
 
 - **Naming:** `upl<Module><Keyword><Action>` (no separators) — e.g. `uplIODInPortReadBit`,
-  `uplIODOutPortWriteBits`, `uplIODInModeConfig`.
+  `uplIODOutPortWriteBit`, `uplIODInModeConfig`.
 - **Files:** `*.puh2` headers, `*.pup2` implementations, `upl*` prefix for library files,
   `uph*` for shared constants.
 - **Axis-first:** user-facing APIs take `lAxis_` first; functions select the axis via

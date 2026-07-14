@@ -100,10 +100,11 @@ Example:
 ## 8) Versioning Convention
 
 - Use semantic versioning in module headers: `MAJOR.MINOR.PATCH`.
+- **Lockstep versioning**: all modules (and `uphGeneralConstants.puh2`) share a single library version, bumped together for each coordinated release. The number reflects the library release as a whole, **not** an individual module's change history.
 - **PATCH**: typo/doc/comment-only or non-functional cleanup.
 - **MINOR**: backward-compatible feature/documentation expansion.
 - **MAJOR**: breaking API/signature/behavior changes.
-- For coordinated library release, all touched modules should be version-reviewed together.
+- The library-wide bump uses the highest change class across all modules in the release (any breaking change in any module bumps the shared MAJOR).
 
 ## 9) Change Classification for Releases
 

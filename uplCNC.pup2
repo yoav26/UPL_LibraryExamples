@@ -3,7 +3,7 @@
 // -------------------------------------
 // 
 // for more info, review README_uplCNC.md
-// version:    1.2.0
+// version:    5.0.0
 // 
 // 
 // 
@@ -289,7 +289,7 @@ endoffunc
 // -- ArrayType_   : array selection (0 = GenData[], 1 = UserParam[])
 // -- Index_       : target array index value
 // -- TriggerType_ : 0=None, 1=GreaterThan, 2=EqualTo, 3=NotEqualTo, 4=SmallerThan,
-//                   5=RisingEdge, 6=FallingEdge, 7=Reserved(acts as 0), 8=UponChange
+//                   5=RisingEdge, 6=FallingEdge, 7=Reserved(behaves as None/0), 8=UponChange
 // -- TriggerValue_: trigger value; ignored for TriggerType_ = 8 but must still be pushed
 // Note: function argument order is lAxis-first for user convenience; pushed parameter order is
 //       controller-defined and kept as ArrayType, lAxis, Index, TriggerType, TriggerValue.
@@ -387,7 +387,7 @@ endoffunc
 // -- Value1_..Value4_: values to write to 4 consecutive array entries
 // -- TriggerIndex_  : array index value used by the wait trigger
 // -- TriggerType_   : 0=None, 1=GreaterThan, 2=EqualTo, 3=NotEqualTo, 4=SmallerThan,
-//                     5=RisingEdge, 6=FallingEdge, 7=Reserved(acts as 0), 8=UponChange
+//                     5=RisingEdge, 6=FallingEdge, 7=Reserved(behaves as None/0), 8=UponChange
 // -- TriggerValue_  : trigger value; ignored for TriggerType_ = 8 but must still be pushed
 // Note: function argument order is lAxis-first for user convenience; pushed parameter order is
 //       controller-defined and kept as ArrayType, lAxis, Index, Value1..4, TriggerIndex, TriggerType, TriggerValue.
@@ -438,7 +438,7 @@ endoffunc
 // -- Index_          : AInPort index value (used for AInPort only, must be > 0)
 // -- DInputsMask_    : bit-mask for DInPort trigger check (used for DInPort only, default -1)
 // -- TriggerType_    : 0=None, 1=GreaterThan, 2=EqualTo, 3=NotEqualTo, 4=SmallerThan,
-//                      5=RisingEdge, 6=FallingEdge, 7=Reserved(acts as 0), 8=UponChange
+//                      5=RisingEdge, 6=FallingEdge, 7=Reserved(behaves as None/0), 8=UponChange
 // -- TriggerValue_   : trigger value; ignored for TriggerType_ = 8 but must still be pushed
 // CNC engine behavior when this segment is reached:
 //   * Waits in-position of all member axes until the trigger condition is satisfied.
